@@ -28,7 +28,7 @@ class UserController extends BaseController {
     {
         $user = Auth::user();
         if(!empty($user->id)){
-            return Redirect::to('/');
+            return Redirect::route('product.index');
         }
 
         return View::make('user.login');
@@ -40,10 +40,22 @@ class UserController extends BaseController {
      */
     public function postLogin()
     {
+        $validatorRules = array(
+            'user_name'        => 'regex:/^[a-zA-Z0-9_]+$/',
+        );
+        //         dd(Input::all());
+        $validator = Validator::make(Input::all(), $validatorRules);
+        
+        if ($validator->fails())
+        {
+            return Redirect::route('user.getLogin')
+            ->with('error-message', $validator->errors()->first());
+        }
+        
         if (Auth::attempt(array('user_name'=>Input::get('user_name'), 'password'=>Input::get('password')))) {
-            return Redirect::to('/')->with('message', 'Thank you! Your submission has been received!');
+            return Redirect::route('product.index')->with('message', 'Welcome to Exam Cart, You signed in. Your username is '. Input::get('user_name') .'!');
         } else {
-            return Redirect::to('user/login')
+            return Redirect::route('user.getLogin')
             ->with('error-message', 'Oops! Something went wrong while submitting the form :(')
             ->withInput();
         }
@@ -58,7 +70,7 @@ class UserController extends BaseController {
     public function getLogout()
     {
         Auth::logout();
-        return Redirect::to('user/login')->with('message', 'Your are now logged out!');
+        return Redirect::route('user.getLogin')->with('message', 'Your are now logged out!');
     }
 
 }

@@ -5,7 +5,14 @@
 <title>TTV - Login Form</title>
 <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/style.css">
-
+<style>
+.table-header{
+    padding-bottom: 2px;
+    padding-top: 5px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 9px;
+}
+</style>
 </head>
 <body>
        

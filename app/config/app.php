@@ -124,6 +124,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
         'Zizaco\Confide\ServiceProvider',
+		'Barryvdh\Debugbar\ServiceProvider',
 // 	    'Torann\Currency\CurrencyServiceProvider',
 
 	),

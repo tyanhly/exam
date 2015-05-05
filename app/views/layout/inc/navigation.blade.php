@@ -2,8 +2,8 @@
   <div class="w-container">
     <a class="w-nav-brand" href="#"></a>
     <nav class="w-nav-menu" role="navigation">
-        <a class="w-nav-link" href="{{URL::to('/');}}">Home</a>
-        <a class="w-nav-link" href="{{URL::to('/');}}">Home</a>
+        <a class="w-nav-link" href="{{route('product.index');}}">Products</a>
+        <a class="w-nav-link" href="{{route('cart.index');}}">Cart</a>
     </nav>
     <div class="w-nav-button">
         <div class="w-icon-nav-menu"></div>

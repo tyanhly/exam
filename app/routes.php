@@ -17,19 +17,47 @@
 // });
 
 
-//:: User Account Routes ::
-Route::get('user/login', 'UserController@getLogin');
-
-Route::get('user/logout', 'UserController@getLogout');
-
-Route::group(['before' => 'csrf'], function(){
-    Route::post('user/login', 'UserController@postLogin');
-});
-
-
-Route::get('/', 'ProductController@index');
-
-Route::post('/cart/add',[
-    'as' => 'cart.add',
-    'uses' => 'CartController@addToCart'
+Route::get('login',[
+    'as' => 'user.getLogin',
+    'uses' => 'UserController@getLogin'
 ]);
+Route::group(['before' => 'csrf'], function(){
+
+    Route::post('login',[
+        'as' => 'user.postLogin',
+        'uses' => 'UserController@postLogin'
+    ]);
+    
+});
+    
+Route::group(['before' => 'auth'], function(){
+    
+    Route::get('logout',[
+        'as' => 'user.getLogout',
+        'uses' => 'UserController@getLogout'
+    ]);
+    
+    Route::get('',[
+        'as' => 'product.index',
+        'uses' => 'ProductController@index'
+    ]);
+
+    Route::post('cart/add',[
+        'as' => 'cart.add',
+        'uses' => 'CartController@addToCart'
+    ]);
+    Route::post('cart/delete',[
+        'as' => 'cart.delete',
+        'uses' => 'CartController@delete'
+    ]);
+
+    Route::post('cart/check-coupon',[
+        'as' => 'cart.checkCoupon',
+        'uses' => 'CartController@checkCoupon'
+    ]);
+    
+    Route::get('cart',[
+        'as' => 'cart.index',
+        'uses' => 'CartController@index'
+    ]);
+});

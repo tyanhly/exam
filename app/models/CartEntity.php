@@ -2,20 +2,72 @@
 
 class CartEntity 
 {
-    private  $_products = array();
+    private  $_items = array();
     
-    public function CartEntity($products=array()){
-        $this->_products = $products;
+    /**
+     * @param array $items
+     * @author Tung Ly
+     */
+    public function CartEntity($items=array()){
+        $this->_items = $items;
     }
-    
+
+    /**
+     * @param CartItemEntity $item
+     * @author Tung Ly
+     */
     public function add(CartItemEntity $item){
-        if(array_key_exists($item->product->id, $this->_products)){
-            return false;
+        
+        if($item->getQuantity() >$item->getProduct()->stock_quantity){
+            throw new CartException(CartException::MODEL_CART_ITEM_QUANTITY_NOT_ENOUGH);
         }
-        $this->_products[$item->product->id] = $item;
+        if(!$this->isExistedItem($item)){
+            $this->_items[$item->getProduct()->id] = $item;
+        }else{
+            $quantity = $this->_items[$item->getProduct()->id]->getQuantity() + $item->getQuantity();
+            if($quantity > $this->_items[$item->getProduct()->id]->getProduct()->stock_quantity){
+                throw new CartException(CartException::MODEL_CART_ITEM_QUANTITY_NOT_ENOUGH);
+            }
+            $this->_items[$item->getProduct()->id]->setQuantity($quantity);
+        }
+    }
+
+    /**
+     * @param CartItemEntity $item
+     * @throws CartException
+     * @author Tung Ly
+     */
+    public function remove(CartItemEntity $item){
+        if(!$this->isExistedItem($item)){
+            throw new CartException(CartException::MODEL_CART_ITEM_NOT_EXISTED);
+        }else{
+            unset($this->_items[$item->getProduct()->id]);
+        }
+    }
+    
+    /**
+     * @param CartItemEntity $item
+     * @return boolean
+     * @author Tung Ly
+     */
+    public function isExistedItem(CartItemEntity $item){
+        if(array_key_exists($item->getProduct()->id, $this->_items)){
+            return true;
+        }
+        return false;
+    }
+    
+    public function toArray(){
+        $arrResult = array();
+        foreach ($this->_items as $item){
+            $arrResult[] = $item->toArray();
+        }
+        return $arrResult;
     }
     
     
-    
+    public function getItems(){
+        return $this->_items;
+    }
 }
 

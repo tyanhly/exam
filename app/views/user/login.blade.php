@@ -12,7 +12,7 @@
         
         @include('layout.inc.navigation')
         @include('layout.inc.message')
-        <form method="post" id="wf-form-Login-Form" name="wf-form-Login-Form" data-name="Login Form"  action="{{{ URL::to('/user/login') }}}">
+        <form method="post" id="wf-form-Login-Form" name="wf-form-Login-Form" data-name="Login Form"  action="{{{ route('user.postLogin') }}}">
        
         <h1>Login</h1>
         

@@ -69,5 +69,4 @@ class ProductController extends \BaseController
         // show the view and pass the nerd to it
         return View::make('product.show')->with('product', $nerd);
     }
-n
 }
