@@ -11,10 +11,10 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
+// Route::get('/', function()
+// {
+// 	return View::make('hello');
+// });
 
 
 //:: User Account Routes ::
@@ -27,4 +27,9 @@ Route::group(['before' => 'csrf'], function(){
 });
 
 
-Route::get('user/login', 'UserController@getLogin');
+Route::get('/', 'ProductController@index');
+
+Route::post('/cart/add',[
+    'as' => 'cart.add',
+    'uses' => 'CartController@addToCart'
+]);
