@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+source config
+################################################################################
+echo ">>>> Creating database "
+MYSQL_EXE_PATH=`which mysql`
+#$MYSQL -uroot -p$1 -e "create database exam; create database exam_testing;"
+$MYSQL_EXE_PATH -u$MYSQL_USER -p$MYSQL_PASS -e "create database $MYSQL_DB_LOCAL;create database $MYSQL_DB_TESTING;"
+
+
+
+################################################################################
+echo ">>>> copy files sources"
+cp -rf $SOURCE_PATH/* $ROOT_PATH/
+
+################################################################################
+echo ">>>> Create test run script"
+
+cat > $ROOT_PATH/runtest << EOF
+phpunit --testsuite AppTest --coverage-html public/test
+EOF
+chmod +x $ROOT_PATH/runtest
+
+#
+#wget https://phar.phpunit.de/phpunit.phar
+#chmod +x phpunit.phar
+#sudo mv phpunit.phar /usr/local/bin/phpunit
+#phpunit --version
+
+################################################################################
+echo ">>>> Create server run script"
+
+cat > $ROOT_PATH/runserver << EOF
+php -S $SERVER_NAME:$SERVER_PORT -t public
+EOF
+
+chmod +x $ROOT_PATH/runserver
+
+################################################################################
+echo ">>>> Create browser run script"
+
+cat > $ROOT_PATH/runbrowser << EOF
+google-chrome http://$SERVER_NAME:$SERVER_PORT
+EOF
+
+chmod +x $ROOT_PATH/runbrowser
+

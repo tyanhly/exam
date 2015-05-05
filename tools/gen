@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+source ./config
+cd $ROOT_PATH
+
+composer dump-autoload 
+php $ROOT_PATH/artisan dump-autoload --env="local"
+
+php artisan generate:publish-templates \
+ --path=$TEMPLATE_PATH --env=local
+
+cp -rf $SOURCE_TEMPLATE_PATH/* $TEMPLATE_PATH
+
+OBJECT="tttt"
+           
+php artisan generate:scaffold $OBJECT \
+ --fields="code:string:unique, \
+title:string, \
+content:text" --env="local"
+
+
+
+
+cat >> app/routes.php << EOF
+
+##############################################
+# ${OBJECT^} Management
+##############################################
+
+Route::resource('$OBJECT','${OBJECT^}sController', [
+    'except' => [ 'index', 'edit', 'create', 'show']
+]);
+
+Route::group(['before'=>'csrf'], function() {
+    Route::resource('$OBJECT','${OBJECT^}sController',
+        ['only' => ['store','update','destroy']]);
+});
+
+EOF
+
+cat << EOF
+Please add to navigation
+<li><a href="$OBJECT">$OBJECT</a></li>
+EOF
+cd $TOOL_PATH

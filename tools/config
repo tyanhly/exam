@@ -1,0 +1,13 @@
+TOOL_PATH=`pwd`
+ROOT_PATH=$TOOL_PATH/..
+
+SOURCE_PATH=$TOOL_PATH/source/laravel
+TEMPLATE_PATH=$TOOL_PATH/templates
+SOURCE_TEMPLATE_PATH=$TOOL_PATH/source/templates
+
+MYSQL_USER="root"
+MYSQL_PASS="rootroot"
+MYSQL_DB_LOCAL="exam"
+MYSQL_DB_TESTING="exam_testing"
+SERVER_NAME="localhost"
+SERVER_PORT="8888"
