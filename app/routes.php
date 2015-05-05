@@ -15,3 +15,16 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+
+//:: User Account Routes ::
+Route::get('user/login', 'UserController@getLogin');
+
+Route::get('user/logout', 'UserController@getLogout');
+
+Route::group(['before' => 'csrf'], function(){
+    Route::post('user/login', 'UserController@postLogin');
+});
+
+
+Route::get('user/login', 'UserController@getLogin');
