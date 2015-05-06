@@ -24,7 +24,7 @@ INSERT INTO `tbl_coupon` (`id`, `name`, `code`, `start_date`, `expired_date`, `c
 (2,	'Coupon 1',	'CP00000000024',	'2015-04-30 00:00:00',	'2015-05-31 00:00:00',	2,	1,	'0000-00-00 00:00:00',	'0000-00-00 00:00:00'),
 (3,	'Coupon 4',	'CP00000020012',	'2015-04-30 00:00:00',	'2015-05-29 00:00:00',	3,	0,	'0000-00-00 00:00:00',	'0000-00-00 00:00:00'),
 (4,	'Coupon 1',	'CP00000000024',	'2015-04-30 00:00:00',	'2015-05-31 00:00:00',	2,	1,	'0000-00-00 00:00:00',	'0000-00-00 00:00:00'),
-(5,	'Coupon 2',	'CP00000000012',	'2015-04-30 00:00:00',	'2015-05-31 00:00:00',	0,	0,	'0000-00-00 00:00:00',	'0000-00-00 00:00:00');
+(5,	'Coupon 2',	'CP00000000012',	'2015-04-30 00:00:00',	'2015-05-01 00:00:00',	0,	0,	'0000-00-00 00:00:00',	'0000-00-00 00:00:00');
 
 DROP TABLE IF EXISTS `tbl_coupon_type`;
 CREATE TABLE `tbl_coupon_type` (
@@ -50,13 +50,14 @@ CREATE TABLE `tbl_order` (
   `discount` float NOT NULL,
   `address_info` text COLLATE utf8_bin NOT NULL,
   `total_payment` double(12,0) NOT NULL,
+  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-INSERT INTO `tbl_order` (`id`, `coupon_id`, `user_id`, `discount`, `address_info`, `total_payment`, `updated_at`, `created_at`) VALUES
-(1,	1,	1,	10,	'789 ung van khiem',	35550000,	'0000-00-00 00:00:00',	'0000-00-00 00:00:00');
+INSERT INTO `tbl_order` (`id`, `coupon_id`, `user_id`, `discount`, `address_info`, `total_payment`, `creation_date`, `updated_at`, `created_at`) VALUES
+(1,	1,	1,	10,	'789 ung van khiem',	35550000,	'0000-00-00 00:00:00',	'0000-00-00 00:00:00',	'0000-00-00 00:00:00');
 
 DROP TABLE IF EXISTS `tbl_orderdetail`;
 CREATE TABLE `tbl_orderdetail` (
@@ -710,7 +711,7 @@ CREATE TABLE `tbl_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `tbl_user` (`id`, `user_name`, `password`, `first_name`, `last_name`, `remember_token`, `isactive`, `updated_at`, `created_at`) VALUES
-(1,	'user0',	'8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',	'User',	'0',	'M7842FORQjLYhnwa2xoTtfCAms1pjHIbXUf6TYaqFRUaaXOZbo9gVe1MLkyU',	1,	'2015-05-05 16:49:03',	'2015-05-05 15:57:46'),
+(1,	'user0',	'8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',	'User',	'0',	'Pmt2OEn1AEq5NvUMsecXUnS5lDY5UTMHyIQuuEhRbMShBshO1M7dE5osco22',	1,	'2015-05-05 17:41:27',	'2015-05-05 15:57:46'),
 (2,	'user1',	'8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',	'User',	'1',	'',	1,	'2015-05-05 15:57:47',	'2015-05-05 15:57:47'),
 (3,	'user2',	'8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',	'User',	'2',	'',	1,	'2015-05-05 15:57:47',	'2015-05-05 15:57:47'),
 (4,	'user3',	'8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',	'User',	'3',	'',	1,	'2015-05-05 15:57:47',	'2015-05-05 15:57:47'),
@@ -721,4 +722,4 @@ INSERT INTO `tbl_user` (`id`, `user_name`, `password`, `first_name`, `last_name`
 (9,	'user8',	'8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',	'User',	'8',	'',	1,	'2015-05-05 15:57:47',	'2015-05-05 15:57:47'),
 (10,	'user9',	'8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',	'User',	'9',	'',	1,	'2015-05-05 15:57:47',	'2015-05-05 15:57:47');
 
--- 2015-05-05 16:51:27
+-- 2015-05-05 23:42:35

@@ -55,6 +55,10 @@ Route::group(['before' => 'auth'], function(){
         'as' => 'cart.checkCoupon',
         'uses' => 'CartController@checkCoupon'
     ]);
+    Route::post('cart/order',[
+        'as' => 'cart.order',
+        'uses' => 'CartController@order'
+    ]);
     
     Route::get('cart',[
         'as' => 'cart.index',

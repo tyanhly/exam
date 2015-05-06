@@ -95,22 +95,17 @@
                <div><strong>{{ number_format($total) }}</strong></div>
             </div>
          </div>
+         
          <div class="w-row">
             <div class="w-col w-col-9">
                <div class="w-form">
-                  <form id="email-form" name="email-form" data-name="Email Form">
+                  <form action="{{route('cart.checkCoupon');}}" method="post" id="checkCoupon">
                      <div>Please enter coupon if needed</div>
-                     <input class="w-input" id="coupon-2" 
+                     <input class="w-input" id="couponCode" 
                         type="text" placeholder="Coupon code" 
-                        name="coupon" data-name="Coupon 2">
+                        name="couponCode" data-name="Coupon 2" value="{{Session::has('couponCode')?Session::get('couponCode'):''}}">
 					 <input class="w-button" type="submit" value="Check Coupon" data-wait="Please wait...">
                   </form>
-                  <div class="w-form-done">
-                     <p>Thank you! Your submission has been received!</p>
-                  </div>
-                  <div class="w-form-fail">
-                     <p>Oops! Something went wrong while submitting the form :(</p>
-                  </div>
                </div>
             </div>
             <div class="w-col w-col-3" vertical-align="true">
@@ -128,10 +123,8 @@
          <div class="w-row">
             <div class="w-col w-col-9">
                <div class="w-form">
-                  <form id="email-form" name="email-form" data-name="Email Form">
                      <div>Enter address information&nbsp;(*)</div>
-                     <textarea class="w-input" id="field" placeholder="Enter your address" name="field"></textarea>
-                  </form>
+                     <textarea class="w-input" placeholder="Enter your address" id="address"></textarea>
                </div>
             </div>
             <div class="w-col w-col-3">
@@ -145,17 +138,21 @@
             </div>
             <div class="w-col w-col-3">
                 <div class="w-form">
-                  <form id="email-form" name="email-form" data-name="Email Form" action="listproduct.html">
+                    <form  action="{{route('cart.order');}}" method="post" id="checkout">
                      <div class="w-row">
                         <div class="w-col w-col-8">
                             <input class="w-button" type="submit" onclick="window.location.href='{{route("product.index")}}';return false;" value="Continue Shopping" data-wait="Please wait..."></div>
                         <div class="w-col w-col-4">
-                        <input class="w-button" type="button" onclick="done()" value="Register Order" data-wait="Please wait..." style="background-color:blue"></div>
+                        <input type="hidden"  name="address" id="checkoutAddress" />
+                        <input type="hidden"  name="couponCode" id="checkoutCouponCode" />
+                        <input class="w-button" type="submit" value="Register Order" data-wait="Please wait..." style="background-color:blue"></div>
+                        
                      </div>
-                  </form>
+                    </form>
                </div>
 			</div>
          </div>	
+         
       </div>
 
   </section>
@@ -163,5 +160,16 @@
 @stop
 
 @section('script')
- 
-@stop
+ <script type="text/javascript">    
+function submitCheckCoupon(){
+	$("#checkCoupon").submit();
+}
+    $(function(){
+        $("form#checkout").submit(function(){
+            $("#checkoutAddress").val($("#address").val());
+            $("#checkoutCouponCode").val($("#couponCode").val());
+            $(this).submit();
+        });
+    });
+</script>
+ @stop

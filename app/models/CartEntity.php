@@ -69,5 +69,19 @@ class CartEntity
     public function getItems(){
         return $this->_items;
     }
+    
+    public function getNumberOfItems(){
+
+        return count($this->_items);
+    }
+    
+
+    public function getTotal($discount = 0){
+        $total = 0;
+        foreach($this->_items as $item){
+            $total += $item->getQuantity()*$item->getProduct()->sale_price;
+        }
+        return $total*(100-$discount)/100;
+    }
 }
 

@@ -9,5 +9,11 @@ class Coupon extends Eloquent {
 	 */
 	protected $table = 'tbl_coupon';
 
+	protected $fillable = ['code', 'name','start_date', 'expired_date', 'status'];
+	public function couponType()
+	{
+	    return $this->belongsTo('CouponType');
+	}
+	
 }
 

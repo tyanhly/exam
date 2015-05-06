@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 class CartController extends \BaseController
 {
 
@@ -81,26 +82,78 @@ class CartController extends \BaseController
     
     public function checkCoupon(){
 
+        $couponCode = Input::get('couponCode');
+        $this->_validateCoupon($couponCode);
+
+        return Redirect::route('cart.index')->with('message', 'Coupon is valid.');
+        
+    }
+    
+    private function _validateCoupon($couponCode){
+
         $validatorRules = array(
-            'coupon' => 'required|numeric'
+            'couponCode' => 'required|alpha_num',
         );
         
-        // dd(Input::all());
-        $validator = Validator::make(Input::all(), $validatorRules);
+        $input = array('couponCode' => $couponCode);
+        $validator = Validator::make($input, $validatorRules);
         
         if ($validator->fails()) {
             return Redirect::route('cart.index')->with('error-message', $validator->errors()
                 ->first());
         }
-        $id = Input::get('id');
         
-        $product = Product::find($id);
-        if (! $product) {
-            return Redirect::route('cart.index')->with('error-message', 'Product not found');
+        $coupon = Coupon::where('code', $couponCode)->first();
+        
+        if (! $coupon) {
+            return Redirect::route('cart.index')->with('error-message', 'Coupon does not exist.')
+            ->with('couponCode', $couponCode);
         }
         
-        Cart::removeItemFromProduct($product);
+        $now = Carbon::now();
+//         echo $coupon->expired_date;die;
+        $expire = Carbon::createFromFormat('Y-m-d H:i:s', $coupon->expired_date);
         
-        return Redirect::route('cart.index')->with('message', "Remove item success");
+        if ($now->gt($expire)) {
+            return Redirect::route('cart.index')->with('error-message', 'Coupon has expired.');
+        }
+        $start = Carbon::createFromFormat('Y-m-d H:i:s', $coupon->start_date);
+        if ($now->lt($start)) {
+            return Redirect::route('cart.index')->with('error-message', 'Coupon had not start yet.');
+        }
+        
+        if ($coupon->status == 1){
+            return Redirect::route('cart.index')->with('error-message', 'Coupon has already used.');
+        
+        }
+        
+        
+    }
+    
+    public function order(){
+//         dd(\Input::all());
+
+        $couponCode = \Input::get('couponCode',null);
+        $coupon = null;
+        if($couponCode){
+            $this->_validateCoupon($couponCode);
+            $coupon = Coupon::with('couponType')->where('code', $couponCode)->first();
+        }
+
+        $validatorRules = array(
+            'address' => 'required',
+        );
+        
+        $validator = Validator::make(\Input::all(), $validatorRules);
+        
+        if ($validator->fails()) {
+            return Redirect::route('cart.index')->with('error-message', $validator->errors()
+                ->first());
+        }
+        
+        $orderId = Cart::order(Auth::user()->id, \Input::get('address'), $coupon);
+        
+
+        return Redirect::route('cart.index')->with('message', "Your order Id is $orderId has been received and is currently in verification process");
     }
 }

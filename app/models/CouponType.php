@@ -9,6 +9,11 @@ class CouponType extends Eloquent {
 	 * @var string
 	 */
 	protected $table = 'tbl_coupon_type';
-
+	protected $fillable = ['discount', 'name',];
+	public function coupon()
+	{
+	    return $this->hasMany('Coupon', 'coupon_type_id');
+	}
+	
 }
 
