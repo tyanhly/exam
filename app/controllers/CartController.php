@@ -43,6 +43,7 @@ class CartController extends \BaseController
         try {
             Cart::addItemFromProduct($product, $quantity);
         } catch (Exception $e) {
+//             throw $e;
             if ($e->getCode() == CartException::MODEL_CART_ITEM_QUANTITY_NOT_ENOUGH) {
                 $msg = "The number of {$product->name} is not enough to sell";
             } else {
@@ -74,8 +75,15 @@ class CartController extends \BaseController
         if (! $product) {
             return Redirect::route('cart.index')->with('error-message', 'Product not found');
         }
+
+        try {
+            Cart::removeItemFromProduct($product);
+        } catch (Exception $e) {
+            $msg = $e->getMessage();
+            return Redirect::route('cart.index')
+            ->with('error-message', $msg);
+        }
         
-        Cart::removeItemFromProduct($product);
         
         return Redirect::route('cart.index')->with('message', "Remove item success");
     }
@@ -117,6 +125,7 @@ class CartController extends \BaseController
         if ($now->gt($expire)) {
             return Redirect::route('cart.index')->with('error-message', 'Coupon has expired.');
         }
+        
         $start = Carbon::createFromFormat('Y-m-d H:i:s', $coupon->start_date);
         if ($now->lt($start)) {
             return Redirect::route('cart.index')->with('error-message', 'Coupon had not start yet.');
@@ -152,9 +161,15 @@ class CartController extends \BaseController
             return Redirect::route('cart.index')->with('error-message', $validator->errors()
                 ->first());
         }
-        
-        $orderId = Cart::order(Auth::user()->id, \Input::get('address'), $coupon);
-        
+        try {
+
+            $orderId = Cart::order(Auth::user()->id, \Input::get('address'), $coupon);
+            
+        } catch (Exception $e) {
+            $msg = $e->getMessage();
+            return Redirect::route('cart.index')
+            ->with('error-message', $msg);
+        }
 
         return Redirect::route('cart.index')->with('message', "Your order Id is $orderId has been received and is currently in verification process");
     }

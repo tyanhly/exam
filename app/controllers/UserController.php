@@ -27,7 +27,7 @@ class UserController extends BaseController {
     public function getLogin()
     {
         $user = Auth::user();
-        if(!empty($user->id)){
+        if($user){
             return Redirect::route('product.index');
         }
 

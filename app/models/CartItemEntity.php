@@ -1,8 +1,9 @@
 <?php
 
 /**
- * @author Tung Ly
  *
+ * @author Tung Ly
+ *        
  */
 class CartItemEntity
 {
@@ -17,8 +18,7 @@ class CartItemEntity
      * @param number $quantity            
      * @author Tung Ly
      */
-    public function CartItemEntity(Product $product, $quantity)
-    {
+    public function CartItemEntity (Product $product, $quantity) {
         $this->_product = $product;
         $this->_quantity = $quantity;
     }
@@ -28,17 +28,16 @@ class CartItemEntity
      * @return Product
      * @author Tung Ly
      */
-    public function getProduct()
-    {
+    public function getProduct () {
         return $this->_product;
     }
 
     /**
-     * @param Product $product
+     *
+     * @param Product $product            
      * @author Tung Ly
      */
-    public function setProduct(Product $product)
-    {
+    public function setProduct (Product $product) {
         $this->_product = $product;
     }
 
@@ -47,19 +46,18 @@ class CartItemEntity
      * @return number
      * @author Tung Ly
      */
-    public function getQuantity()
-    {
+    public function getQuantity () {
         return $this->_quantity;
     }
-    
+
     /**
-     * @param number $quantity
+     *
+     * @param number $quantity            
      * @author Tung Ly
      */
-    public function setQuantity($quantity)
-    {
+    public function setQuantity ($quantity) {
         $this->_quantity = $quantity;
     }
-    
+
 }
 

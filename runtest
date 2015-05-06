@@ -1,2 +1,2 @@
-#phpunit --testsuite AppTest --verbose
-phpunit --testsuite AppTest --coverage-html public/test 
+phpunit --testsuite AppTest --verbose
+#phpunit --testsuite AppTest --coverage-html public/test 

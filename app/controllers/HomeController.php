@@ -24,8 +24,10 @@ class HomeController extends BaseController {
 	    echo '<pre>';
 	    $en = Cart::encrypt("hehehe dasf3 dsf as r34rdf das asfdasfas!{%$}{^(_)*&_34[l; m34v4 p4fcsvxczv vxczv4124#@#@$#B#V#%#5");
 	    echo $en . '<br />';
+
+// 	    $de = Cart::decrypt($en);
+	    $de = Cart::decrypt("JJgr5ySe6/wCLpEKpsMLKnP99isGB4eCpI2yf411cq2r/1QZNmim94Zf9tiByN9dwlyMz0aPUK6l3uBKzHGvPrVRjrJ8zrjOs7t1UQd4wMS2yFCDA7ekRGJLYkqxRNNnqhDjQADiuDbdLFtdZ3jY5Q==");
 	    
-	    $de = Cart::decrypt($en);
 	    echo $de;
 	    die;
 	}

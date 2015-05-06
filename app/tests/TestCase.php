@@ -23,6 +23,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 	
 	
 	public function console($msg){
-	    echo "__" . get_class($this) . "." . $msg . "\n";
+// 	    echo "__" . get_class($this) . "." . $msg . "\n";
+	    echo " * " . $msg . "\n";
 	}
 }

@@ -12,7 +12,17 @@
 >
     <testsuites>
         <testsuite name="AppTest">
-            <directory subfix="Test.php">./app/tests/</directory>
+            <directory subfix="Test.php">./app/tests</directory>
         </testsuite>
     </testsuites>
+    
+    <logging>
+        <log type="coverage-html" target="./public/test" charset="UTF-8" yui="true" />
+    </logging>
+    
+    <!-- 
+    <logging>
+        <log type="coverage-html" target="./public/test" charset="UTF-8" yui="true" />
+    </logging>
+     -->
 </phpunit>

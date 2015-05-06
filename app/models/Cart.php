@@ -38,6 +38,7 @@ class Cart
     public static function removeItem(CartItemEntity $item)
     {
         $cartEntity = Cart::getCartEntity();
+//         dd($cartEntity);die;
         $cartEntity->remove($item);
         Cart::setCartEntity($cartEntity);
     }
@@ -66,6 +67,8 @@ class Cart
      */
     public static function getCartEntity()
     {
+        if(!Auth::user())
+            throw new CartException(CartException::AUTH_HAD_NOT_AUTHEN);
         return Session::get(Cart::getSessionCartKey(), new CartEntity());
     }
 
@@ -103,7 +106,10 @@ class Cart
             $couponId = $coupon->id;
         }
         try {
-
+            $user = User::find($userId);
+            if(!$user){
+                throw new Exception("User is not found");
+            }
             \DB::beginTransaction();
             $order = new Order();
             $order->user_id = $userId;
@@ -152,7 +158,7 @@ class Cart
         $method = Config::get("constants.encryptMethod");
         $pass = Config::get("constants.encryptPass");
         $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($method));
-        $en=openssl_encrypt($value, $method, $pass, true, $iv);
+        $en=base64_encode(openssl_encrypt($value, $method, $pass, true, $iv));
         return  $en;
     }
     
@@ -166,7 +172,7 @@ class Cart
         $method = Config::get("constants.encryptMethod");
         $pass = Config::get("constants.encryptPass");
         $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($method));
-        $de=openssl_decrypt($value, $method, $pass, true, $iv);
+        $de=openssl_decrypt(base64_decode($value), $method, $pass, true, $iv);
         return  $de;
     }
 }
