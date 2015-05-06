@@ -6,7 +6,7 @@ return array(
         'mysql' => array(
             'driver'    => 'mysql',
             'host'      => 'localhost',
-            'database'  => 'exam_testing',
+            'database'  => 'exam2015_testing',
             'username'  => 'root',
             'password'  => 'x',
         ),

@@ -61,17 +61,5 @@ class CartItemEntity
         $this->_quantity = $quantity;
     }
     
-    public function toArray(){
-        $arrResult = array();
-        if(!$this->_quantity || !$this->_product){
-            throw new CartException(CartException::MODEL_CART_ITEM_PROPERTIES_CANT_NOT_TOARRAY);
-        }
-            $arrResult['code'] = $this->_product->code;
-            $arrResult['name'] = $this->_product->name;
-            $arrResult['sale_price'] = $this->_product->sale_price;
-            $arrResult['quantity'] = $this->_product->quantity;
-            $arrResult['subtotal'] = $this->_product->quantity * $this->_product->sale_price;
-        return $arrResult;        
-    }
 }
 

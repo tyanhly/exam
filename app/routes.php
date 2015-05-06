@@ -22,7 +22,7 @@ Route::get('login',[
     'uses' => 'UserController@getLogin'
 ]);
 
-Route::get('test',[
+Route::get('testcrypt',[
     'as' => 'test',
     'uses' => 'HomeController@getTest'
 ]);

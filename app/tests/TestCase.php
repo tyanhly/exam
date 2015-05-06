@@ -2,6 +2,10 @@
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
+    
+    public function setUp(){
+        parent::setUp();
+    }
 	/**
 	 * Creates the application.
 	 *
@@ -16,4 +20,9 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 		return require __DIR__.'/../../bootstrap/start.php';
 	}
 
+	
+	
+	public function console($msg){
+	    echo "__" . get_class($this) . "." . $msg . "\n";
+	}
 }

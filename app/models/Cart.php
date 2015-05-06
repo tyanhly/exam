@@ -19,23 +19,10 @@ class Cart
         Cart::setCartEntity($cartEntity);
     }
 
-    public static function removeItem(CartItemEntity $item)
-    {
-        $cartEntity = Cart::getCartEntity();
-        $cartEntity->remove($item);
-        Cart::setCartEntity($cartEntity);
-    }
-
-    public static function removeItemFromProduct(Product $product)
-    {
-        $item = new CartItemEntity($product, 1);
-        Cart::removeItem($item);
-    }
-
     /**
      *
-     * @param Product $product            
-     * @param number $quantity            
+     * @param Product $product
+     * @param number $quantity
      * @author Tung Ly
      */
     public static function addItemFromProduct(Product $product, $quantity = 1)
@@ -43,7 +30,32 @@ class Cart
         $item = new CartItemEntity($product, $quantity);
         Cart::addItem($item);
     }
+    
+    /**
+     * @param CartItemEntity $item
+     * @author Tung Ly
+     */
+    public static function removeItem(CartItemEntity $item)
+    {
+        $cartEntity = Cart::getCartEntity();
+        $cartEntity->remove($item);
+        Cart::setCartEntity($cartEntity);
+    }
 
+    /**
+     * @param Product $product
+     * @author Tung Ly
+     */
+    public static function removeItemFromProduct(Product $product)
+    {
+        $item = new CartItemEntity($product, 1);
+        Cart::removeItem($item);
+    }
+
+    /**
+     * @return string
+     * @author Tung Ly
+     */
     public static function getSessionCartKey(){
         return 'cart' . Auth::user()->id;
     }
@@ -57,11 +69,6 @@ class Cart
         return Session::get(Cart::getSessionCartKey(), new CartEntity());
     }
 
-    public static function getCartArray()
-    {
-        $cart = Session::get(Cart::getSessionCartKey(), new CartEntity());
-        return $cart->toArray();
-    }
 
     /**
      *
@@ -136,6 +143,11 @@ class Cart
         }
     }
 
+    /**
+     * @param unknown $value
+     * @return string
+     * @author Tung Ly
+     */
     public static function encrypt($value){
         $method = Config::get("constants.encryptMethod");
         $pass = Config::get("constants.encryptPass");
@@ -145,6 +157,11 @@ class Cart
     }
     
 
+    /**
+     * @param unknown $value
+     * @return string
+     * @author Tung Ly
+     */
     public static function decrypt($value){
         $method = Config::get("constants.encryptMethod");
         $pass = Config::get("constants.encryptPass");

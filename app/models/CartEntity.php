@@ -57,14 +57,6 @@ class CartEntity
         return false;
     }
     
-    public function toArray(){
-        $arrResult = array();
-        foreach ($this->_items as $item){
-            $arrResult[] = $item->toArray();
-        }
-        return $arrResult;
-    }
-    
     
     public function getItems(){
         return $this->_items;
@@ -81,6 +73,7 @@ class CartEntity
         foreach($this->_items as $item){
             $total += $item->getQuantity()*$item->getProduct()->sale_price;
         }
+//         echo count($this->_items);die;
         return $total*(100-$discount)/100;
     }
 }
