@@ -127,7 +127,7 @@ class CartController extends \BaseController
         
         }
         
-        
+        return true;
     }
     
     public function order(){
@@ -136,10 +136,12 @@ class CartController extends \BaseController
         $couponCode = \Input::get('couponCode',null);
         $coupon = null;
         if($couponCode){
-            $this->_validateCoupon($couponCode);
+            $valid =$this->_validateCoupon($couponCode);
+            if($valid !== true){
+                return $valid;
+            }
             $coupon = Coupon::with('couponType')->where('code', $couponCode)->first();
         }
-
         $validatorRules = array(
             'address' => 'required',
         );

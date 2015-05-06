@@ -19,5 +19,15 @@ class HomeController extends BaseController {
 	{
 		return View::make('hello');
 	}
+	
+	public function getTest(){
+	    echo '<pre>';
+	    $en = Cart::encrypt("hehehe dasf3 dsf as r34rdf das asfdasfas!{%$}{^(_)*&_34[l; m34v4 p4fcsvxczv vxczv4124#@#@$#B#V#%#5");
+	    echo $en . '<br />';
+	    
+	    $de = Cart::decrypt($en);
+	    echo $de;
+	    die;
+	}
 
 }

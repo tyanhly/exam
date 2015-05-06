@@ -16,4 +16,6 @@ return array(
         'orderValue' => 'in:DESC,ASC',
         'keywords' => ''
     ),
+    'encryptMethod' => 'aes-128-ecb',
+    'encryptPass' => 'hehehe',
 );

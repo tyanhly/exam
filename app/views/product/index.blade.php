@@ -58,6 +58,8 @@
             <div class="w-col w-col-3">
                <div class="w-form">
                   <form action="{{ route('cart.add') }}" method="post" id="add-cart-form" name="add-cart-form" data-name="Add Cart Form">
+                      <input type="hidden" name="_token"
+                           value="{{{ Session::getToken() }}}">
                       <input class="w-input" id="pro1_quantityuantity" 
                             type="number" placeholder="Enter product's quantity" 
                             name="quantity" data-name="quantity" style="width: 180px;">

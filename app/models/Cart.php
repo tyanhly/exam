@@ -44,6 +44,9 @@ class Cart
         Cart::addItem($item);
     }
 
+    public static function getSessionCartKey(){
+        return 'cart' . Auth::user()->id;
+    }
     /**
      *
      * @return CartEntity
@@ -51,12 +54,12 @@ class Cart
      */
     public static function getCartEntity()
     {
-        return Session::get('cart', new CartEntity());
+        return Session::get(Cart::getSessionCartKey(), new CartEntity());
     }
 
     public static function getCartArray()
     {
-        $cart = Session::get('cart', new CartEntity());
+        $cart = Session::get(Cart::getSessionCartKey(), new CartEntity());
         return $cart->toArray();
     }
 
@@ -67,7 +70,7 @@ class Cart
      */
     public static function setCartEntity(CartEntity $cartEntity)
     {
-        Session::set('cart', $cartEntity);
+        Session::set(Cart::getSessionCartKey(), $cartEntity);
     }
 
     /**
@@ -86,13 +89,18 @@ class Cart
             throw new CartException(CartException::ORDER_CART_DONT_HAVE_ITEM);
         }
 //         dd( $coupon->couponType());
-        $discount = $coupon->couponType->discount;
+        $discount = 0;
+        $couponId = null;
+        if($coupon){
+            $discount = $coupon->couponType->discount;
+            $couponId = $coupon->id;
+        }
         try {
 
             \DB::beginTransaction();
             $order = new Order();
             $order->user_id = $userId;
-            $order->coupon_id = $coupon->id;
+            $order->coupon_id = $couponId;
             $order->address_info = Cart::encrypt($address);
             $order->discount = $discount;
             $order->total_payment = $cartEntity->getTotal($discount);
@@ -111,7 +119,16 @@ class Cart
                 $product->save();
                 
             } 
+            
+            //update coupon
+            
+            if($coupon){
+                $coupon->status = 1;
+                $coupon->save();
+            }
             \DB::commit();
+            
+            Cart::setCartEntity(new CartEntity());
             return $order->id;
         } catch (Exception $e) {
             \DB::rollback();
@@ -120,23 +137,20 @@ class Cart
     }
 
     public static function encrypt($value){
-//         openssl_private_encrypt($data, $encryptData,
-//             openssl_get_privatekey($priKey, $passphrase));
-//         return base64_encode($encryptData);
-        return base64_encode($value);
+        $method = Config::get("constants.encryptMethod");
+        $pass = Config::get("constants.encryptPass");
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($method));
+        $en=openssl_encrypt($value, $method, $pass, true, $iv);
+        return  $en;
     }
     
 
     public static function decrypt($value){
-//         openssl_get_publickey($pubKey);
-//         openssl_public_decrypt(base64_decode($data), $decryptData,
-//             openssl_get_publickey($pubKey));
-//         if ($decryptData == NULL) {
-//             throw new RequestException(
-//                 RequestException::ERROR_RSA_CANNOT_DECRYPT);
-//         }
-//         return $decryptData;
-        return base64_decode($value);
+        $method = Config::get("constants.encryptMethod");
+        $pass = Config::get("constants.encryptPass");
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($method));
+        $de=openssl_decrypt($value, $method, $pass, true, $iv);
+        return  $de;
     }
 }
 

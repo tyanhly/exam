@@ -21,6 +21,17 @@ Route::get('login',[
     'as' => 'user.getLogin',
     'uses' => 'UserController@getLogin'
 ]);
+
+Route::get('test',[
+    'as' => 'test',
+    'uses' => 'HomeController@getTest'
+]);
+
+
+Route::get('error/{page}',function($page){
+    return View::make('errors.' . $page);
+});
+
 Route::group(['before' => 'csrf'], function(){
 
     Route::post('login',[
@@ -42,26 +53,31 @@ Route::group(['before' => 'auth'], function(){
         'uses' => 'ProductController@index'
     ]);
 
-    Route::post('cart/add',[
-        'as' => 'cart.add',
-        'uses' => 'CartController@addToCart'
-    ]);
-    Route::post('cart/delete',[
-        'as' => 'cart.delete',
-        'uses' => 'CartController@delete'
-    ]);
-
-    Route::post('cart/check-coupon',[
-        'as' => 'cart.checkCoupon',
-        'uses' => 'CartController@checkCoupon'
-    ]);
-    Route::post('cart/order',[
-        'as' => 'cart.order',
-        'uses' => 'CartController@order'
-    ]);
-    
     Route::get('cart',[
         'as' => 'cart.index',
         'uses' => 'CartController@index'
     ]);
+    
+    Route::group(['before' => 'csrf'], function(){
+        
+        Route::post('cart/add',[
+            'as' => 'cart.add',
+            'uses' => 'CartController@addToCart'
+        ]);
+        Route::post('cart/delete',[
+            'as' => 'cart.delete',
+            'uses' => 'CartController@delete'
+        ]);
+    
+        Route::post('cart/check-coupon',[
+            'as' => 'cart.checkCoupon',
+            'uses' => 'CartController@checkCoupon'
+        ]);
+        Route::post('cart/order',[
+            'as' => 'cart.order',
+            'uses' => 'CartController@order'
+        ]);
+
+    });
+    
 });

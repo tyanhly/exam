@@ -56,6 +56,9 @@
          <div class="w-row">
             <div class="w-col w-col-1">
                <form action="{{ route('cart.delete') }}" method="post" id="add-cart-form" name="add-cart-form" data-name="Delete">
+               
+                  <input type="hidden" name="_token"
+                       value="{{{ Session::getToken() }}}">
                   <input type="hidden" value="{{ $item->getProduct()->id;}}" name="id">
                   <input class="w-button" type="submit" value="[X]" data-wait="Please wait...">
               </form>
@@ -81,10 +84,14 @@
          </div>
          
          @endforeach
-         
-         
-         
-         <div class="w-row">
+         @if($total==0)
+         <div class="w-row" style="margin-bottom: 40px;">
+            <div class="w-col w-col-12">
+                <div>No Data</div>
+            </div>
+         </div>
+         @else
+         <div class="w-row" style="margin-bottom: 40px;">
             <div class="w-col w-col-1"></div>
             <div class="w-col w-col-5"></div>
             <div class="w-col w-col-2"></div>
@@ -95,12 +102,18 @@
                <div><strong>{{ number_format($total) }}</strong></div>
             </div>
          </div>
+         @endif
+         
+         
          
          <div class="w-row">
             <div class="w-col w-col-9">
                <div class="w-form">
                   <form action="{{route('cart.checkCoupon');}}" method="post" id="checkCoupon">
                      <div>Please enter coupon if needed</div>
+                     
+                     <input type="hidden" name="_token"
+                           value="{{{ Session::getToken() }}}">
                      <input class="w-input" id="couponCode" 
                         type="text" placeholder="Coupon code" 
                         name="couponCode" data-name="Coupon 2" value="{{Session::has('couponCode')?Session::get('couponCode'):''}}">
@@ -143,6 +156,9 @@
                         <div class="w-col w-col-8">
                             <input class="w-button" type="submit" onclick="window.location.href='{{route("product.index")}}';return false;" value="Continue Shopping" data-wait="Please wait..."></div>
                         <div class="w-col w-col-4">
+                        
+                        <input type="hidden" name="_token"
+                               value="{{{ Session::getToken() }}}">
                         <input type="hidden"  name="address" id="checkoutAddress" />
                         <input type="hidden"  name="couponCode" id="checkoutCouponCode" />
                         <input class="w-button" type="submit" value="Register Order" data-wait="Please wait..." style="background-color:blue"></div>
